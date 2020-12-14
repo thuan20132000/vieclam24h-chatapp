@@ -16,7 +16,9 @@ app.set('view engine', 'ejs');
 
 var WebSocket = require('ws')
 var WebSocketServer = require('ws').Server;
-var wss = new WebSocketServer({ port: 8181 });
+var wss = new WebSocketServer({
+    port: 8181
+});
 
 
 const UserConversationController = require('./Controller/UserConversationController');
@@ -99,9 +101,13 @@ app.get('/home', function (req, res) {
     res.render('client');
 });
 
+var port = process.env.PORT || 3000;
+const server = app.listen(port, () =>
+    console.log("WEBHOOK IS LISTENING..: " + port)
+);
 
 
-var server = app.listen(3000, () => {
-    console.log(`server is running on port`, server.address().port);
+// var server = app.listen(3000, () => {
+//     console.log(`server is running on port`, server.address().port);
 
-});
+// });
