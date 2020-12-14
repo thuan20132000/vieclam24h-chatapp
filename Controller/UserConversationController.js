@@ -4,7 +4,7 @@ const UserConversation = require('../Model/UserConversationModel');
 exports.saveConversations = async (client_uuid) => {
 
     let xx = await UserConversation.create({
-        conversation_id: client_uuid,
+        conversation_id: "1111-2222",
         from: {
             id: 1,
             name: "Thuan 1"
