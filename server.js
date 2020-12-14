@@ -76,25 +76,6 @@ wss.on(`connection`, function (ws) {
 
 
 
-    // ws.on('message', function (message) {
-    //     console.log(message);
-
-    //     for (let i = 0; i < clients.length; i++) {
-    //         var clientSocket = clients[i].ws;
-
-    //         if (clientSocket.readyState === WebSocketServer.OPEN) {
-    //             console.log(`Client [%s]: %s `, clients[i].id, message);
-
-    //             clientSocket.send(JSON.stringify({
-    //                 "id": client_uuid,
-    //                 "message": message
-    //             }));
-    //         }
-
-
-    //     }
-    // });
-
 
 
     ws.on('close', function () {
@@ -114,7 +95,7 @@ wss.on(`connection`, function (ws) {
 
 
 
-app.get('/', function (req, res) {
+app.get('/home', function (req, res) {
     res.render('client');
 });
 
