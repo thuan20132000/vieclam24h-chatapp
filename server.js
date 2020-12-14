@@ -43,7 +43,9 @@ var clientIndex = 1;
 
 
 wss.on(`connection`, function (ws) {
+    console.log(ws);
 
+    
     var client_uuid = uuid.v4();
     var nickname = "AnonymousUser" + clientIndex;
     clientIndex += 1;
