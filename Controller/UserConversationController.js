@@ -1,23 +1,19 @@
 
 const UserConversation = require('../Model/UserConversationModel');
 
-exports.saveConversations = async (client_uuid) => {
+exports.saveConversations = async (data) => {
 
-    let xx = await UserConversation.create({
-        conversation_id: "1111-2222",
-        from: {
-            id: 1,
-            name: "Thuan 1"
-        },
-        to: {
-            id: 2,
-            name: "Thuan 2"
-        },
-        message: "Hello world",
-        image_url: [],
+    try {
+        console.log('data send: ',data);
+        let conversation_id = `${data.from.id}-${data.to.id}`;
+        let dataSend = { ...data, conversation_id };
+        // console.log(dataSend);
+        let xx = await UserConversation.create(dataSend);
+    } catch (error) {
+        console.log(error);
+    }
 
-    });
 
-    console.log('created: ',xx);
+    // console.log('created: ',xx);
 
 }

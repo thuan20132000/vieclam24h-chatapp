@@ -22,6 +22,7 @@ const UserConversationSchema = new Schema({
         type:Array,
         default:[],
     },
+    type:String,
     date:{ type: Date, default: Date.now },
 
  

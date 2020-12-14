@@ -10,10 +10,10 @@
 
 
     <script>
-
+        var numberRand = Math.floor(Math.random() * 10);
         var HOST = location.origin.replace(/^http/, 'ws')
-        var ws = new WebSocket(HOST);
-        console.log(ws);
+        var ws = new WebSocket(HOST+`/${numberRand}`);
+        console.log(HOST);
         var nickname = "";
         ws.onopen = function (e) {
             console.log("Connection to sever opened");
@@ -42,10 +42,11 @@
 
         ws.onmessage = function (e) {
             var data = JSON.parse(e.data);
-            nickname = data.nickname;
-            console.log("nickname: ", nickname);
-            appendLog(data.type, data.nickname, data.message);
-            console.log("ID: [%s] = %s ", data.id, data.message);
+            console.log(data);
+            // nickname = data.nickname;
+            // console.log("nickname: ", nickname);
+            // appendLog(data.type, data.nickname, data.message);
+            // console.log("ID: [%s] = %s ", data.id, data.message);
 
         }
 
@@ -58,8 +59,16 @@
             var messageField = document.getElementById('message');
             if (ws.readyState === WebSocket.OPEN) {
                 ws.send(JSON.stringify({
+                    "from":{
+                        "id":11111,
+                        "name":"thuan11111"
+                    },
+                    "to":{
+                        "id":22222,
+                        "name":"thuan22222"
+                    },
                     "type": "message",
-                    "text": messageField.value
+                    "message": "hello 1"
                 }));
             }
             messageField.value = '';

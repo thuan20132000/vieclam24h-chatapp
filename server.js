@@ -38,54 +38,85 @@ var wss = new WebSocketServer({ server });
 var clients = [];
 
 
-function wsSend(type, client_uuid, nickname, message) {
+function wsSend(type, user_id, nickname, message) {
+
+    let clientIndex = clients.findIndex(e => e.id == user_id);
+    console.log(clientIndex);
+    let userSocket = clients[0].ws;
+    userSocket.send(JSON.stringify({
+        "type": "text",
+        "id": 1111,
+        "nickname": "text",
+        "message": "text"
+    }));
+
+
+    // for (let i = 0; i < clients.length; i++) {
+    //     var clientSocket = clients[i].ws;
+    //     if (clientSocket.readyState === WebSocketServer.OPEN) {
+    //         console.log(nickname);
+    //         clientSocket.send(JSON.stringify({
+    //             "type": type,
+    //             "id": user_id,
+    //             "nickname": nickname,
+    //             "message": message
+    //         }));
+    //     }
+    // }
+}
+
+
+function websocketSend(data) {
     for (let i = 0; i < clients.length; i++) {
         var clientSocket = clients[i].ws;
         if (clientSocket.readyState === WebSocketServer.OPEN) {
-            clientSocket.send(JSON.stringify({
-                "type": type,
-                "id": client_uuid,
-                "nickname": nickname,
-                "message": message
-            }));
+            clientSocket.send(JSON.stringify(data));
         }
     }
 }
+
 var clientIndex = 1;
 
 
-wss.on(`connection`, function (ws) {
+wss.on(`connection`, function (ws, req) {
 
+    let user_req = req.url;
+    let user_id = user_req.substr(1,);
+    // console.log(user_id);
 
     var client_uuid = uuid.v4();
     var nickname = "AnonymousUser" + clientIndex;
     clientIndex += 1;
-    clients.push({ "id": client_uuid, "ws": ws, "nickname": nickname });
-    console.log("client [%s] connected", client_uuid);
+    clients.push({ "id": user_id, "ws": ws, "nickname": nickname });
+    console.log("client [%s] connected", user_id);
     var connect_message = nickname + " has connected";
 
-    wsSend("notification", client_uuid, nickname, connect_message);
+    wsSend("notification", user_id, nickname, connect_message);
 
 
     ws.on('message', function (message) {
 
-
-        UserConversationController.saveConversations(client_uuid);
-
         let data = JSON.parse(message);
-        console.log(data.text);
+        let recipient_id = data.to.id;
 
-        if (message.indexOf('/nick') === 0) {
-            var nickname_array = message.split(' ');
-            if (nickname_array.length >= 2) {
-                var old_nickname = nickname;
-                nickname = nickname_array[1];
-                var nickname_message = "Client " + old_nickname + " changed to " + nickname;
-                wsSend("nick_update", client_uuid, nickname_message);
-            }
-        } else {
-            wsSend("message", client_uuid, nickname, message);
-        }
+      
+        ws.send(JSON.stringify(data));
+        // wsSend("text", user_id, "thuan", "hello");
+
+        UserConversationController.saveConversations(data);
+        //  websocketSend(data);
+
+        // if (message.indexOf('/nick') === 0) {
+        //     var nickname_array = message.split(' ');
+        //     if (nickname_array.length >= 2) {
+        //         var old_nickname = nickname;
+        //         nickname = nickname_array[1];
+        //         var nickname_message = "Client " + old_nickname + " changed to " + nickname;
+        //         wsSend("nick_update", client_uuid, nickname_message);
+        //     }
+        // } else {
+        //     wsSend("message", client_uuid, nickname, message);
+        // }
     })
 
 
