@@ -14,14 +14,26 @@ const ejs = require('ejs');
 app.set('view engine', 'ejs');
 
 
-var WebSocket = require('ws')
-var WebSocketServer = require('ws').Server;
-var wss = new WebSocketServer({
-    port:8181
+const UserConversationController = require('./Controller/UserConversationController');
+
+
+
+
+app.get('/home', function (req, res) {
+    res.render('client');
 });
 
+var port = process.env.PORT || 3000;
+const server = app.listen(port, () =>
+    console.log("WEBHOOK IS LISTENING..: " + port)
+);
 
-const UserConversationController = require('./Controller/UserConversationController');
+
+
+// const { Server } = require('ws');
+var WebSocketServer = require('ws').Server;
+var wss = new WebSocketServer({ server });
+
 
 var clients = [];
 
@@ -29,7 +41,7 @@ var clients = [];
 function wsSend(type, client_uuid, nickname, message) {
     for (let i = 0; i < clients.length; i++) {
         var clientSocket = clients[i].ws;
-        if (clientSocket.readyState === WebSocket.OPEN) {
+        if (clientSocket.readyState === WebSocketServer.OPEN) {
             clientSocket.send(JSON.stringify({
                 "type": type,
                 "id": client_uuid,
@@ -43,9 +55,8 @@ var clientIndex = 1;
 
 
 wss.on(`connection`, function (ws) {
-    console.log(ws);
 
-    
+
     var client_uuid = uuid.v4();
     var nickname = "AnonymousUser" + clientIndex;
     clientIndex += 1;
@@ -95,21 +106,3 @@ wss.on(`connection`, function (ws) {
 
 
 
-
-
-
-
-app.get('/home', function (req, res) {
-    res.render('client');
-});
-
-var port = process.env.PORT || 3000;
-const server = app.listen(port, () =>
-    console.log("WEBHOOK IS LISTENING..: " + port)
-);
-
-
-// var server = app.listen(3000, () => {
-//     console.log(`server is running on port`, server.address().port);
-
-// });
