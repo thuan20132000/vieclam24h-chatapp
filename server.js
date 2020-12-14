@@ -17,7 +17,8 @@ app.set('view engine', 'ejs');
 var WebSocket = require('ws')
 var WebSocketServer = require('ws').Server;
 var wss = new WebSocketServer({
-    port: 8181
+    noServer:true,
+    port:8181
 });
 
 
