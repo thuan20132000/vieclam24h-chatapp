@@ -11,8 +11,9 @@
 
     <script>
 
-        var HOST = location.origin.replace(/^http/, 'ws')
+        var HOST = location.origin.replace(/^http/, 'wss')
         var ws = new WebSocket(HOST);
+        console.log(HOST);
         var nickname = "";
         ws.onopen = function (e) {
             console.log("Connection to sever opened");
