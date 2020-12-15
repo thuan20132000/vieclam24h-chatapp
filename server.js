@@ -2,6 +2,9 @@ var express = require('express');
 const path = require('path');
 var uuid = require('node-uuid');
 
+const apiRoute = require('./routes/api_v1');
+var bodyParser = require('body-parser')
+
 
 const mongoose = require('mongoose');
 mongoose.connect('mongodb+srv://vieclam24h:0976904548@cluster0.otzgp.mongodb.net/test',
@@ -12,7 +15,11 @@ mongoose.connect('mongodb+srv://vieclam24h:0976904548@cluster0.otzgp.mongodb.net
 var app = new express();
 const ejs = require('ejs');
 app.set('view engine', 'ejs');
+app.use(bodyParser.urlencoded({
+    extended:true
+}))
 
+app.use(bodyParser.json());
 
 const UserConversationController = require('./Controller/UserConversationController');
 
@@ -22,6 +29,23 @@ const UserConversationController = require('./Controller/UserConversationControl
 app.get('/home', function (req, res) {
     res.render('client');
 });
+
+
+
+
+
+app.get('/' , async (req,res) => {
+    res.json({
+        status:201
+    })
+})
+
+app.use('/api/v1',apiRoute);
+
+
+
+
+
 
 var port = process.env.PORT || 3000;
 const server = app.listen(port, () =>

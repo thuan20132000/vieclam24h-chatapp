@@ -60,15 +60,16 @@
             if (ws.readyState === WebSocket.OPEN) {
                 ws.send(JSON.stringify({
                     "from":{
-                        "id":11111,
-                        "name":"thuan11111"
+                        "id":1111,
+                        "name":"thuan1111"
                     },
                     "to":{
-                        "id":22222,
-                        "name":"thuan22222"
+                        "id":2222,
+                        "name":"thuan2222"
                     },
                     "type": "message",
-                    "message": "hello 1"
+                    "message":messageField.value,
+                    "connection":"5fd8bbd9085fb4162a414469"
                 }));
             }
             messageField.value = '';
