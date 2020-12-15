@@ -128,9 +128,9 @@ wss.on(`connection`, function (ws, req) {
 
         for (let i = 0; i < clients.length; i++) {
             var clientSocket = clients[i].ws;
-            if (clientSocket.readyState === WebSocketServer.OPEN) {
-                clientSocket.send(JSON.stringify(data));
-            }
+            // if (clientSocket.readyState === WebSocketServer.OPEN) {
+            clientSocket.send(JSON.stringify(data));
+            // }
         }
         // wsSend("text", user_id, "thuan", "hello");
 
