@@ -16,7 +16,7 @@ var app = new express();
 const ejs = require('ejs');
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({
-    extended:true
+    extended: true
 }))
 
 app.use(bodyParser.json());
@@ -34,13 +34,13 @@ app.get('/home', function (req, res) {
 
 
 
-app.get('/' , async (req,res) => {
+app.get('/', async (req, res) => {
     res.json({
-        status:201
+        status: 201
     })
 })
 
-app.use('/api/v1',apiRoute);
+app.use('/api/v1', apiRoute);
 
 
 
@@ -123,8 +123,15 @@ wss.on(`connection`, function (ws, req) {
         let data = JSON.parse(message);
         let recipient_id = data.to.id;
 
-      
-        ws.send(JSON.stringify(data));
+
+       // ws.send(JSON.stringify(data));
+
+        for (let i = 0; i < clients.length; i++) {
+            var clientSocket = clients[i].ws;
+            if (clientSocket.readyState === WebSocketServer.OPEN) {
+                clientSocket.send(JSON.stringify(data));
+            }
+        }
         // wsSend("text", user_id, "thuan", "hello");
 
         UserConversationController.saveConversations(data);
