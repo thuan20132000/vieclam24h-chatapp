@@ -14,7 +14,7 @@ router.get('/', function(req,res){
  * 
  * description:  message chat conversations
  */
-router.route('/conversations/:conversation_id')
+router.route('/conversations/:connection_id')
 .get(userConversationController.getConversations);
 
 

@@ -40,9 +40,9 @@ exports.saveConversations = async (data) => {
  */
 exports.getConversations = async (req, res) => {
     try {
-        let conversation_id = req.params.conversation_id;
-
-        let user_conversatiosn = await UserConversationModel.find({conversation_id:conversation_id})
+        let connection_id = req.params.connection_id;
+        console.log(connection_id);
+        let user_conversatiosn = await UserConversationModel.find({connection:connection_id})
             .sort({ date: 'desc' })
 
 

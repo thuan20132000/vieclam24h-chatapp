@@ -48,6 +48,8 @@ const UserConversationSchema = new Schema({
     },
     type:String,
     date:{ type: Date, default: Date.now },
+    isMine:Boolean
+
 
  
 });
