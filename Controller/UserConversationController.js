@@ -42,16 +42,20 @@ exports.getConversations = async (req, res) => {
     try {
         let connection_id = req.params.connection_id;
         let sortBy = req.query.sortby || 'asc';
-        let limit = req.query.limit || 15;
-        console.log(connection_id);
-        let user_conversatiosn = await UserConversationModel.find({connection:connection_id})
+        let limit = Number(req.query.limit) || 15;
+        let next_page_number = Number(req.query.pagenext) || 0;
+        
+        let user_conversation = await UserConversationModel.find({connection:connection_id})
             .sort({ date: sortBy })
             .limit(limit)
+            .skip(next_page_number)
 
 
+       
         res.json({
             status: true,
-            data: user_conversatiosn,
+            data: user_conversation,
+            page_number:next_page_number,
             message: "Get Conversation successfully"
         });
 
@@ -61,7 +65,7 @@ exports.getConversations = async (req, res) => {
         res.json({
             status: false,
             data: [],
-            message: "Get User conversation failed"
+            message: "Get User conversation failed "+error
         });
     }
 }
