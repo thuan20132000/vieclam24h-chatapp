@@ -5,12 +5,14 @@ const {UserConversationModel,UserConnectionModel} = require('../Model/UserConver
 exports.saveConversations = async (data) => {
 
     try {
-        let conversation_id = `${data.from.id}-${data.to.id}`;
-        let dataSend = { ...data, conversation_id };
-        console.log('data Save: ',dataSend);
-        let xx = await UserConversationModel.create(dataSend);
+        
 
-        let connection = await UserConnectionModel.findOne({conversation_id:conversation_id});
+
+
+        let xx = await UserConversationModel.create(data);
+
+        let connection = await UserConnectionModel.findOne({_id:data.connection});
+        console.log('data connection: ',connection);
 
         let a = await connection.conversations.push(xx);
         await connection.save();
