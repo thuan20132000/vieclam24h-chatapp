@@ -144,7 +144,7 @@ exports.getUserConnection = async (req, res) => {
         let user_connections = await UserConnectionModel.find().or([{from:user_id},{to:user_id}])
         .limit(15)
         .sort({date:'desc'})
-        .populate({path:'conversations',options: { sort: { 'date': -1 } }} );
+        .populate({path:'conversations',options: { sort: { 'date': -1 },limit:5 }} );
         
         res.json({
             status: true,
